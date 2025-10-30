@@ -16,12 +16,13 @@ A Docker Compose setup for running WordPress with Nginx, PHP-FPM, MySQL, and com
   - MySQLd Exporter (database metrics)
   - Nginx Exporter (web server metrics)
   - Blackbox Exporter (probe metrics)
+  - Alertmanager (for alerts)
 
 ## Prerequisites
 
 - Docker installed
 - Docker Compose installed
-- Ports 80, 9090, 9100, 9104, 9113, 9115 available
+- Ports 80, 9090, 9100, 9104, 9113, 9115, 9093 available
 
 ## Quick Start
 
