@@ -1,0 +1,28 @@
+global:
+  smtp_smarthost: 'localhost:25'
+  smtp_from: 'alertmanager@example.com'
+
+route:
+  group_by: ['example']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'Telegram'
+
+receivers:
+  - name: 'Telegram'
+    telegram_configs:
+      - bot_token: 'TOKEN'
+        chat_id: -100123456789
+        send_resolved: true
+        # You can also customize messages here using a template file
+        # telegram_configs:
+        #   - toml
+        # You can also include custom templates in your configuration
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']

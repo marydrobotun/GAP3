@@ -107,6 +107,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml
     networks:
       - wp_network
     depends_on:
@@ -115,10 +116,29 @@ services:
       - nginx-exporter
       - blackbox-exporter
     restart: unless-stopped
+  
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager_data:/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=http://localhost:9093'
+    networks:
+      - wp_network
+    depends_on:
+      - prometheus
+    restart: unless-stopped
 
 
 volumes:
   mysql_data:
+  alertmanager_data:
 
 networks:
   wp_network:
