@@ -7,18 +7,25 @@ route:
   group_wait: 10s
   group_interval: 10s
   repeat_interval: 1h
-  receiver: 'Telegram'
+  routes:
+  - receiver: 'Telegram-critical'
+    matchers:
+    - severity = "critical"
+  - receiver: 'Telegram-warning'
+    matchers:
+    - severity = "warning"
 
 receivers:
-  - name: 'Telegram'
+  - name: 'Telegram-critical'
     telegram_configs:
       - bot_token: 'TOKEN'
         chat_id: -100123456789
         send_resolved: true
-        # You can also customize messages here using a template file
-        # telegram_configs:
-        #   - toml
-        # You can also include custom templates in your configuration
+  - name: 'Telegram-warning'
+    telegram_configs:
+      - bot_token: 'TOKEN'
+        chat_id: -100000000000
+        send_resolved: true
 
 inhibit_rules:
   - source_match:
